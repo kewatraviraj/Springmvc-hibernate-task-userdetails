@@ -12,16 +12,23 @@ import org.springmvchibernate.model.User;
  *
  */
 public interface UserService {
-	
+
 	/**
 	 * @param email
 	 * @param password
 	 * @return
 	 */
 	boolean login(String email, String password);
+
+	Object forgotPass(String email);
+
 	User userdetails(String email);
+
 	void savedata(User user);
+
 	List<User> listUsers();
+
 	boolean deleteUser(Integer user_id);
-	User fetchUser(Object object);
+
+	List<Object> fetchUser(Integer object);
 }

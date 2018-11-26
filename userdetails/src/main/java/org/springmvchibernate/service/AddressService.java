@@ -18,5 +18,5 @@ public interface AddressService {
 	 * @param attribute
 	 * @return
 	 */
-	Address fetchAddress(Object attribute);
+//	Address fetchAddress(Object attribute);
 }

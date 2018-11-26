@@ -4,19 +4,30 @@
 package org.springmvchibernate.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Base64;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 import org.springmvchibernate.model.Address;
 import org.springmvchibernate.model.Files;
 import org.springmvchibernate.model.User;
@@ -29,17 +40,14 @@ import org.springmvchibernate.service.UserService;
  *
  */
 @Controller
+@PropertySource("classpath:messages.properties")
 @RequestMapping("/")
 public class UserController {
 
-	@Autowired
-	User user;
+	static Logger _log = Logger.getLogger(UserController.class.getName());
 
 	@Autowired
-	Address address;
-
-	@Autowired
-	Files file;
+	private Environment environment;
 
 	@Autowired
 	UserService userservice;
@@ -55,9 +63,19 @@ public class UserController {
 		return "register";
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(@RequestParam("userName") String email, @RequestParam("passWord") String password,
-			HttpSession session) {
+	@RequestMapping("/dashboard")
+	public String requestdashboard() {
+		return "dashboard";
+	}
+
+	@RequestMapping("/forgot")
+	public String requestforgot() {
+		return "forgot";
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST) /* Login User */
+	public String login(ModelMap model, @RequestParam("userName") String email,
+			@RequestParam("passWord") String password, HttpSession session) {
 
 		if (userservice.login(email, password) != false) {
 			User user = userservice.userdetails(email);
@@ -66,11 +84,24 @@ public class UserController {
 			session.setAttribute("role_id", user.getRole_id());
 			return "dashboard";
 		} else {
+			model.addAttribute("logincheck", environment.getProperty("logincheck"));
 			return "index";
 		}
 	}
 
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	@RequestMapping(value = "/forgotpass", method = RequestMethod.POST) /* Forgot password */
+	public String forgotpassword(@RequestParam("email") String email, ModelMap model) {
+
+		String pass = (String) userservice.forgotPass(email);
+		if (null == pass) {
+			model.addAttribute("forgotmsg", environment.getProperty("unknownEmailforPass"));
+		} else {
+			model.addAttribute("forgotmsg", environment.getProperty("getforgotpass") + pass);
+		}
+		return "forgot";
+	}
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET) /* Logout User */
 	public String logout(HttpSession session) {
 		session.removeAttribute("first_name");
 		session.removeAttribute("user_id");
@@ -78,8 +109,67 @@ public class UserController {
 		return "index";
 	}
 
-	@RequestMapping(value = "/display")
-	public String fetch(ModelMap model, @RequestParam("type") String type) {
+	@RequestMapping(value = "/save", method = RequestMethod.POST) /* Registaer User */
+	public String save(ModelMap model, @ModelAttribute User user, @RequestPart("image") MultipartFile[] filedata,
+			@RequestParam("address_line1") List<String> address_line1,
+			@RequestParam("address_line2") List<String> address_line2, @RequestParam("city") List<String> city,
+			@RequestParam("state") List<String> state, @RequestParam("country") List<String> country,
+			@RequestParam("pincode") List<Integer> pincode) throws IOException {
+
+		Set<Address> setofaddress = new HashSet<Address>();
+		for (int index = 0; index < address_line1.size(); index++) {
+			Address address1 = new AnnotationConfigApplicationContext(Address.class).getBean(Address.class);
+
+			address1.setAddress_line1(address_line1.get(index));
+			address1.setAddress_line2(address_line2.get(index));
+			address1.setCity(city.get(index));
+			address1.setCountry(country.get(index));
+			address1.setPincode(pincode.get(index));
+			address1.setState(state.get(index));
+			setofaddress.add(address1);
+		}
+		user.setAddress(setofaddress);
+
+		Set<Files> setoffile = new HashSet<Files>();
+		if (filedata != null && filedata.length > 0) {
+			for (MultipartFile fileContents : filedata) {
+				Files files = new AnnotationConfigApplicationContext(Files.class).getBean(Files.class);
+				files.setFile(BlobProxy.generateProxy(fileContents.getBytes()));
+				setoffile.add(files);
+			}
+			user.setFile(setoffile);
+		}
+		userservice.savedata(user);
+		return "index";
+	}
+
+	@RequestMapping("/mydetails") /* Get User Own Detail */
+	public String myDetails(ModelMap model, HttpSession session) throws SQLException {
+
+		List<Object> users = userservice.fetchUser((Integer) session.getAttribute("user_id"));
+		for (Iterator<Object> iterator1 = users.iterator(); iterator1.hasNext();) {
+			User user = (User) iterator1.next();
+			model.addAttribute("userdetail", user);
+			model.addAttribute("addresses", user.getAddress());
+			
+			for (Iterator<Files> iterator2 = user.getFile().iterator(); iterator2.hasNext();) {
+			model.addAttribute("filestring", Base64.getEncoder().encodeToString(iterator2.next().getFile().getBytes(1, (int) iterator2.next().getFile().length())));
+			iterator2.next().getFile().free();
+			}
+			
+			model.addAttribute("files", user.getFile());
+		}
+		return "register";
+	}
+
+	// Set<Address> addresses = user.getAddress();
+	// for (Iterator<Address> iterator2 = addresses.iterator();
+	// iterator2.hasNext();) {
+	// Address address = iterator2.next();
+	// }
+
+	@RequestMapping(value = "/display") /* Display Details Admin Panel */
+	public String fetch(ModelMap model, @RequestParam("type") String type) throws SQLException {
 		if ("User".equals(type)) {
 			model.addAttribute("users", userservice.listUsers());
 			return "details";
@@ -87,77 +177,40 @@ public class UserController {
 			model.addAttribute("addresses", serviceaddress.listAddresses());
 			return "addresses";
 		} else {
-			model.addAttribute("files", servicefiles.listFiles());
+			List<Files> filelist = servicefiles.listFiles();
+			for (Iterator<Files> iterator2 = filelist.iterator(); iterator2.hasNext();) {
+				model.addAttribute("filestring", Base64.getEncoder().encodeToString(iterator2.next().getFile().getBytes(1, (int) iterator2.next().getFile().length())));
+				}
+			model.addAttribute("files", filelist);
 			return "files";
 		}
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String save(ModelMap model, @ModelAttribute User user, @ModelAttribute Address address, @ModelAttribute Files file 
-			/*@RequestParam("address_line1") List<String> address_line1,
-			@RequestParam("address_line2") List<String> address_line2,
-			@RequestParam("city") List<String> city,
-			@RequestParam("state") List<String> state,
-			@RequestParam("country") List<String> country,
-			@RequestParam("pincode") List<Integer> pincode			
-			*/) {
-		
-		Set<Address> setofaddress = new HashSet<Address>();
-		
-		/*List<Address> list = java.util.Arrays.asList(address);
-		System.out.println(user.getAddress());
-		System.out.println(address.getAddress_line1());
-		System.out.println(list.toString().trim());
-		
-		*/
-		setofaddress.add(address);
-		/*for (int index = 0; index < address_line1.size(); index++) {
-			
-			address.setAddress_line1(address_line1.get(index));
-			address.setAddress_line2(address_line2.get(index));
-			address.setCity(city.get(index));
-			address.setCountry(country.get(index));
-			address.setPincode(pincode.get(index));
-			address.setState(state.get(index));
-			
-			setofaddress.add(address);
-			System.out.println(address);
-		}*/
-		user.setAddress(setofaddress);
-	
-		/*Set<Files> setoffile = new HashSet<Files>();
-		
-		 * try { file.setFile(BlobProxy.generateProxy(filedata.getBytes())); } catch
-		 * (IOException e) { // TODO Auto-generated catch block e.printStackTrace(); }
-
-			setoffile.add(file);
-			user.setFile(setoffile);
-		 */
-
-		userservice.savedata(user);
-		return "index";
-	}
-	
-	@RequestMapping("/mydetails")
-	public String myDetails(ModelMap model, HttpSession session) {
-		model.addAttribute("userdetail", userservice.fetchUser(session.getAttribute("user_id")));
-		model.addAttribute("addresses", serviceaddress.fetchAddress(session.getAttribute("user_id")));
-	/*	model.addAttribute("addresses", servicefiles.fetchFiles(session.getAttribute("user_id")));
-	*/	return "register";
-	}
-	
-	@RequestMapping("deleteUser")
-	public void delete(@RequestParam("user_id") Integer user_id,HttpServletResponse response) {
+	@RequestMapping("deleteUser") /* Delete User From Admin Panel */
+	public void delete(@RequestParam("user_id") Integer user_id, HttpServletResponse response) {
 		response.setContentType("text/plain");
 		try {
 			java.io.PrintWriter writer = response.getWriter();
-			if(userservice.deleteUser(user_id)) {
+			if (userservice.deleteUser(user_id)) {
 				writer.print(user_id);
-			}else {
+			} else {
 				writer.print("fail");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@RequestMapping("/userdetails") /* Get User Own Detail */
+	public String userDetails(ModelMap model,@RequestParam("user_id") Integer user_id, HttpSession session) {
+
+		List<Object> users = userservice.fetchUser(user_id);
+		for (Iterator<Object> iterator1 = users.iterator(); iterator1.hasNext();) {
+			User user = (User) iterator1.next();
+			model.addAttribute("userdetail", user);
+			model.addAttribute("addresses", user.getAddress());
+			model.addAttribute("files", user.getFile());
+		}
+		return "register";
 	}
 }

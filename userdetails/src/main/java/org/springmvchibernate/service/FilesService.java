@@ -17,6 +17,6 @@ public interface FilesService {
 	/**
 	 * @param attribute
 	 * @return
-	 */
-	Files fetchFiles(Object attribute);
+	 *//*
+	Files fetchFiles(Object attribute);*/
 }

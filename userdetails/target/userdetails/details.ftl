@@ -46,10 +46,10 @@
 							<td>${userdetail.email }</td>
 							<td><#--${userdetail.created_time }--></td>
 	                        <td>
-								<a href="operation?action=get&&userid=${userdetail.user_id }" class="btn btn-lg label-warning hidden-xs">Edit</a>
-								<a href="operation?action=get&&userid=${userdetail.user_id }" class="edit visible-xs" data-toggle="modal"><i class="glyphicon glyphicon-edit" title="Edit"></i></a>
+								<a href="userdetails?user_id=${userdetail.user_id }" class="btn btn-lg label-warning hidden-xs">Edit</a>
+								<a href="userdetails?user_id=${userdetail.user_id }" class="edit visible-xs" data-toggle="modal"><i class="glyphicon glyphicon-edit" title="Edit"></i></a>
 						
-								<#if Session.user_id == 1>							
+								<#if Session.role_id == 1>							
 									<button data-for="${userdetail.user_id }" type="Submit" class="btn btn-lg label-danger delete hidden-xs">Delete</button>
 									<button data-for="${userdetail.user_id }" class="delete visible-xs" data-toggle="modal"><i class="material-icons" title="Delete">&#xE872;</i></button>
 								</#if>

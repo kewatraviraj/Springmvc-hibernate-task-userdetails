@@ -38,10 +38,10 @@ public class FilesServiceImpl implements FilesService {
 	/* (non-Javadoc)
 	 * @see org.springmvchibernate.service.FilesService#fetchFiles(java.lang.Object)
 	 */
-	@Override
+/*	@Override
 	public Files fetchFiles(Object object) {
 		// TODO Auto-generated method stub
 		return filesdao.find(object);
 	}
-
+*/
 }

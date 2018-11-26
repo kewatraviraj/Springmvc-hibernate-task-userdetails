@@ -28,7 +28,7 @@
 		  		<li style="padding-top:2%"><h3>Welcome ${Session.first_name}</h3></li>
 				<li style="padding-top:2%"><a href="logout" class="btn btn-primary">Logout</a></li>
 		  	<#else>
-		  		<li style="padding-top:2%"><a href="registerrequest" class="btn btn-primary">Sign Up</a></li>
+		  		<li style="padding-top:2%"><a href="requestregister" class="btn btn-primary">Sign Up</a></li>
 				<li style="padding-top:2%"><a href="index.ftl" class="btn btn-primary">Login</a><li>
 		  	</#if>
 		    </ul> 

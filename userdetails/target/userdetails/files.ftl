@@ -32,7 +32,7 @@
 					<tr>
 						<td>${filedetail.file_id }</td>
 						<#if filedetail.file_type == 'image'>
-							<td><img src="data:image/jpeg;base64,${filedetail.filestring }" height:='100px'; width='100px'></td>
+							<td><img src="data:image/jpeg;base64,<#if filestring??>${filestring }</#if>" height:='100px'; width='100px'></td>
 						</#if>
 						<td><#--${filedetail.created_time }  --></td>
 						

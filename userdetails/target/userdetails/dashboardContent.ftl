@@ -15,7 +15,7 @@
 	<#if Session.role_id == 1>
 	<div class="social grid">
 		<div class="grid-info">
-			<div class="col-md-3 top-comment-grid">
+			<div class="col-md-4 top-comment-grid">
 				<a href="display?type=User">
 				<div class="comments likes">	
 					<div class="comments-info likes-info">
@@ -25,7 +25,7 @@
 				</div>
 				</a>
 			</div>
-			<div class="col-md-3 top-comment-grid">
+			<div class="col-md-4 top-comment-grid">
 				<a href="display?type=Address">
 				<div class="comments">
 					<div class="comments-info">
@@ -35,7 +35,7 @@
 				</div>
 				</a>
 			</div>
-			<div class="col-md-3 top-comment-grid">
+			<div class="col-md-4 top-comment-grid">
 				<a href="display?type=Files">
 				<div class="comments tweets">
 					<div class="comments-info tweets-info">
@@ -45,7 +45,7 @@
 				</div>
 				</a>
 			</div>
-			<div class="col-md-3 top-comment-grid">
+		<#--  	<div class="col-md-3 top-comment-grid">
 				<a href="">
 				<div class="comments views">
 					<div class="comments-info views-info">
@@ -54,7 +54,7 @@
 					<div class="clearfix"> </div>
 				</div>
 				</a>
-			</div>
+			</div>  -->
 			<div class="clearfix"> </div>
 		</div>
 	</div>	

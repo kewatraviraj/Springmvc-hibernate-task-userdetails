@@ -2,6 +2,7 @@ package org.springmvchibernate.model;
 
 import java.sql.Blob;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -19,17 +20,20 @@ import org.springframework.stereotype.Component;
 public class Files {
 
 	@Id
-	@GeneratedValue(generator = "increment")
-	@GenericGenerator(name = "increment", strategy = "increment")
+	@GeneratedValue(generator="native")
+	@GenericGenerator(name="native",strategy="native")
+	@Column(nullable = false,unique = true) 
 	private Integer file_id;
 	private String file_type = "image";
 	
 	@Lob
+	@Column(nullable = false) 
 	private Blob file;
 	
-	/*private Calendar file_created_time;
-	private Integer file_update_by;
-	private Calendar file_update_time;*/
+	public Files() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public Integer getFile_id() {
 		return file_id;
@@ -47,10 +51,6 @@ public class Files {
 		this.file_type = file_type;
 	}
 
-/*	public void setFile(byte[] bs) {
-		this.file = Arrays.copyOf(file, file.length);
-	}
-*/
 	public void setFile(Blob file) {
 		this.file = file;
 	}
@@ -59,7 +59,9 @@ public class Files {
 		return file;
 	}
 
-
+	/*private Calendar file_created_time;
+	private Integer file_update_by;
+	private Calendar file_update_time;*/
 
 /*	public Integer getFile_update_by() {
 		return file_update_by;

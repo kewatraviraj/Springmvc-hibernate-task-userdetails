@@ -32,7 +32,7 @@
 								</div>
 								<div class="bottom">
 									<div class="form-group">
-										<a href="forgot.ftl" class="pass-forgot">Forgot your password?</a>
+										<a href="forgot" class="pass-forgot">Forgot your password?</a>
 									</div>
 									<div class="form-group">
 										<button type="submit" class="btn btn-primary disabled">Login</button><br>

@@ -1,5 +1,6 @@
 package org.springmvchibernate.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,21 +13,22 @@ import org.springframework.stereotype.Component;
 public class Address {
 	
 	@Id
-	@GeneratedValue(generator="increment")
-	@GenericGenerator(name="increment",strategy="increment")
+	@GeneratedValue(generator="native")
+	@GenericGenerator(name="native",strategy="native")
+	@Column(nullable = false,unique = true) 
 	private Integer address_id;
 	
+	@Column(nullable = false) 
 	private String address_line1;
 	private String address_line2;
+	@Column(nullable = false) 
 	private String city;
+	@Column(nullable = false) 
 	private String country;
+	@Column(nullable = false) 
 	private Integer pincode;
+	@Column(nullable = false) 
 	private String state;
-	
-	/*private Calendar address_created_time;
-	private Integer address_update_by;
-	private Calendar address_update_time;
-	*/
 	
 	private Integer user_id;
 	/**
@@ -109,7 +111,11 @@ public class Address {
 				+ state + ", user_id=" + user_id + "]";
 	}
 
-
+	/*private Calendar address_created_time;
+	private Integer address_update_by;
+	private Calendar address_update_time;
+	*/
+	
 /*	public Integer getAddress_update_by() {
 		return address_update_by;
 	}

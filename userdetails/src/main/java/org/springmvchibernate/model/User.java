@@ -3,6 +3,7 @@ package org.springmvchibernate.model;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,42 +21,32 @@ import org.springframework.stereotype.Component;
 public class User {
 
 	@Id
-	@GeneratedValue(generator = "increment")
-	@GenericGenerator(name = "increment", strategy = "increment")
+	@GeneratedValue(generator="native")
+	@GenericGenerator(name="native",strategy="native")
+	@Column(nullable = false,unique = true) 
 	private Integer user_id;
 
 	// private Date date_of_birth;
+	@Column(nullable = false,unique = true) 
 	private String email;
+	@Column(nullable = false) 
 	private String first_name;
+	@Column(nullable = false) 
 	private String gender;
 	private String last_name;
 	private Long mobile_no;
+	@Column(nullable = false) 
 	private String password;
 	private Integer role_id = 2;
-
-	/*
-	 * private Calendar user_created_time; private Integer user_update_by; private
-	 * Calendar user_update_time;
-	 */
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
 	private Set<Address> address;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "file_map", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "file_id") })
+	@JoinTable(name = "file_map", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "file_id") })
 	private Set<Files> file;
 
-	/*
-	 * @Override public String toString() { return "User [user_id=" + user_id +
-	 * ", role_id=" + role_id + ", first_name=" + first_name + ", last_name=" +
-	 * last_name + ", email=" + email + ", mobile_no=" + mobile_no + ", password=" +
-	 * password + ", gender=" + gender + ", date_of_birth=" + date_of_birth +
-	 * ", user_created_time=" + user_created_time + ", user_update_by=" +
-	 * user_update_by + ", user_update_time=" + user_update_time + ", address=" +
-	 * address + ", file=" + file + "]"; }
-	 */
 
 	public Integer getUser_id() {
 		return user_id;
@@ -113,6 +104,42 @@ public class User {
 		this.password = password;
 	}
 
+
+	public Integer getRole_id() {
+		return role_id;
+	}
+
+	public void setRole_id(Integer role_id) {
+		this.role_id = role_id;
+	}
+	
+	public Set<Address> getAddress() {
+		return address;
+	}
+	
+	public void setAddress(Set<Address> setofaddress) {
+		this.address = setofaddress;
+	}
+	
+	public Set<Files> getFile() {
+		return file;
+	}
+	
+	public void setFile(Set<Files> file) {
+		this.file = file;
+	}
+
+	@Override
+	public String toString() {
+		return "User [user_id=" + user_id + ", email=" + email + ", first_name=" + first_name + ", gender=" + gender
+				+ ", last_name=" + last_name + ", mobile_no=" + mobile_no + ", password=" + password + ", role_id="
+				+ role_id + ", address=" + address + ", file=" + file + "]";
+	}
+	
+	/*
+	 * private Calendar user_created_time; private Integer user_update_by; private
+	 * Calendar user_update_time;
+	 */
 	/*
 	 * public Calendar getUser_created_time() { return user_created_time; }
 	 * 
@@ -129,37 +156,6 @@ public class User {
 	 * public void setUser_update_time(Calendar user_update_time) {
 	 * this.user_update_time = user_update_time; }
 	 */
-
-	public Set<Files> getFile() {
-		return file;
-	}
-
-	public void setFile(Set<Files> file) {
-		this.file = file;
-	}
-
-	public Integer getRole_id() {
-		return role_id;
-	}
-
-	public void setRole_id(Integer role_id) {
-		this.role_id = role_id;
-	}
-
-	@Override
-	public String toString() {
-		return "User [user_id=" + user_id + ", email=" + email + ", first_name=" + first_name + ", gender=" + gender
-				+ ", last_name=" + last_name + ", mobile_no=" + mobile_no + ", password=" + password + ", role_id="
-				+ role_id + ", address=" + address + ", file=" + file + "]";
-	}
-
-	public Set<Address> getAddress() {
-		return address;
-	}
-
-	public void setAddress(Set<Address> setofaddress) {
-		this.address = setofaddress;
-	}
 
 	/*
 	 * public Calendar getDate_of_birth() { return date_of_birth; }

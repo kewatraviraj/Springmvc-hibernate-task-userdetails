@@ -36,11 +36,11 @@ public class AddressServiceImpl implements AddressService {
 	/* (non-Javadoc)
 	 * @see org.springmvchibernate.service.AddressService#fetchAddress(java.lang.Object)
 	 */
-	@Override
+	/*@Override
 	public Address fetchAddress(Object object) {
 		// TODO Auto-generated method stub
 		return addressdao.find(object);
 	}
-
+*/
 
 }

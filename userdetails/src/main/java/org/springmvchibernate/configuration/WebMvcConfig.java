@@ -40,12 +40,20 @@ public class WebMvcConfig implements WebMvcConfigurer {
           .addResourceLocations("/");
     }
 	
-	@Bean
+	@Bean(name = "multipartResolver")
+	public CommonsMultipartResolver getCommonsMultipartResolver() {
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+		multipartResolver.setMaxUploadSize(20971520);   // 20MB
+		multipartResolver.setMaxInMemorySize(1048576);  // 1MB
+		return multipartResolver;
+	}
+	
+/*	@Bean
 	public CommonsMultipartResolver multipartResolver() {
 	    CommonsMultipartResolver resolver=new CommonsMultipartResolver();
 	    resolver.setDefaultEncoding("utf-8");
 	    return resolver;
-	}
+	}*/
 	
 	/*@Bean
 	public MessageSource messageSource() {

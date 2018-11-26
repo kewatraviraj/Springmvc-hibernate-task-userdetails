@@ -16,11 +16,9 @@
 			<div class="text-center"><#--<c:out value="${requestScope.message }" /> --></div>
 			<#include "dashboardContent.ftl" />
 			
-			<!-- footer -->
 			<div class="footer">
 				<p>� 2018. All Rights Reserved. Design by</p>
 			</div>
-			<!-- //footer -->
 		</div>
 	</section>
 	
@@ -29,10 +27,7 @@
 	<script src="js/jquery.cookie.js"></script>
 	<script src="js/bootstrap.js"></script>
 
-	<!--validator js-->
 	<script src="js/customvalidate.js"></script>
-	<!--//validator js-->
-
 	<script src="js/proton.js"></script>
 </body>
 </html>

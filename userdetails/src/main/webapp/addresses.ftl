@@ -41,7 +41,7 @@
 						<td>${addressdetail.city }</td>
 						<td>${addressdetail.state }</td>
 						<td>${addressdetail.country }</td>
-						<td>${addressdetail.pincode }</td>
+						<td>${addressdetail.pincode?long?c  }</td>
 						<td><#--${addressdetail.created_time} --></td>
 						
 					</tr>

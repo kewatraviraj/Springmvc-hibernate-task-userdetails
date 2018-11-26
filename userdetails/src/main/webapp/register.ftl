@@ -22,7 +22,7 @@
 							<h3 id="notchanges"></h3>
 						</div>
 						<#if userdetail??>
-							<div><a href="dashboard.ftl" class="btn btn-large btn-warning">Cancel</a></div>
+							<div><a href="dashboard" class="btn btn-large btn-warning">Cancel</a></div>
 						</#if>
 						<br>
 						<div class="w3agile-validation w3ls-validation">
@@ -34,17 +34,14 @@
 									</div>
 									<div class="form-body form-body-info">
 										<form data-toggle="validator" id="registration-form" novalidate="true" enctype="multipart/form-data" action="save" method="post">
-											<#if files??>
+											<#if !files??>
 											 	<div class="form-group register-image text-center">
 													<img src="images/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar" accept="image/*"><br>
 													<h6>Upload Image...*</h6><br>		
-													<input type="file" name="file" class="text-center file-upload" value="" required="">
+													<input type="file" class="text-center file-upload" name="image" required="">
 												</div>
 											</#if>
 											
-											<#if !userdetail??>
-												<input type="hidden" class="form-control" value="insert" name="operation" required="">
-											</#if>
 											<#if userdetail??>
 												<input type="hidden" class="form-control" value="update" name="operation" required="">
 												<input type="hidden" class="form-control" value="${userdetail.user_id }" name="user_id" required="">
@@ -65,7 +62,7 @@
 												</div>
 												Mobile No.* :
 												<div class="form-group has-feedback">
-													<input type="number" value="${userdetail.mobile_no }" data-toggle="validator" min="0" data-minlength="10" class="form-control" name="mobile_no" id="inputMobile" placeholder="Mobile No" data-error="Invalid mobile No" required="">
+													<input type="number" value="${userdetail.mobile_no?long?c }" data-toggle="validator" min="0" data-minlength="10" class="form-control" name="mobile_no" id="inputMobile" placeholder="Mobile No" data-error="Invalid mobile No" required="">
 													<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
 													<span class="help-block with-errors"></span>
 												</div>
@@ -75,7 +72,7 @@
 													<input type="date" value="${userdetail.date_of_birth }" class="form-control" name="date_of_birth" id="inputDate" placeholder="MM/DD/YYY" required="">
 												</div>
 											 -->
-												<#if Session.user_id?exists || Session.role_id == 1 && userdetail??>
+											<#--	<#if Session.user_id?exists || Session.role_id == 1 && userdetail??>
 												Password* :
 												<div class="form-group">
 												  <input type="password" value="${userdetail.password }" data-toggle="validator" data-minlength="6" class="form-control" name="password" id="inputPassword" placeholder="Password" required="">
@@ -85,9 +82,12 @@
 												  <input type="password" value="${userdetail.password }" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Whoops, these don't match" placeholder="Confirm password" required="">
 												  <div class="help-block with-errors"></div>
 												</div>
-												</#if>
+												</#if>	-->
 											<#else>
-								
+											
+											<#if !userdetail??>
+												<input type="hidden" class="form-control" value="insert" name="operation" required="">
+											</#if>
 											 First Name* :
 											<div class="form-group valid-form">
 												<input type="text" class="form-control" name="first_name" id="inputfirstName" placeholder="First name" required="">
@@ -144,7 +144,6 @@
 													<div class="col-md-12"><button type="button" id="btnAdd-1" class="btn btn-primary">Add New Address</button></div>
 												</div>
 												<#if addresses??>
-													<#if addresses??>
 													<#list addresses as addressdetail>
 													<div class="row group address">
 														<div class="form-group">
@@ -169,7 +168,7 @@
 															Country* :<input  value="${addressdetail.country }" class="form-control" type="text" name="country" required="">
 														</div>
 														<div class="form-group col-md-3">
-															Pincode* :<input  value="${addressdetail.pincode }" class="form-control" data-minlength="6" type="number" min="1" name="pincode" required="">
+															Pincode* :<input  value="${addressdetail.pincode?long?c }" class="form-control" data-minlength="6" type="number" min="1" name="pincode" required="">
 														</div>
 														
 														<div class="col-md-3">
@@ -177,7 +176,6 @@
 														</div>
 													</div>
 													</#list>
-													</#if>
 												<#else>
 													<div class="row group address">
 														<div class="form-group">

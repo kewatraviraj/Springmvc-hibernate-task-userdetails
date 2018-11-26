@@ -32,7 +32,12 @@ public class UserServiceImpl implements UserService {
 	public boolean login(String email,String password) {
 		return userdao.isValidUser(email, password);
 	}
-	
+
+	@Transactional
+	@Override
+	public Object forgotPass(String email) {
+		return userdao.forgotpwd(email);
+	}
 	
 	/* (non-Javadoc)
 	 * @see org.springmvchibernate.service.UserService#savedata(org.springmvchibernate.model.User)
@@ -83,8 +88,9 @@ public class UserServiceImpl implements UserService {
 	 * @see org.springmvchibernate.service.UserService#fetch(java.lang.Object)
 	 */
 	@Override
-	public User fetchUser(Object object) {
+	public List<Object> fetchUser(Integer object) {
 		// TODO Auto-generated method stub
-		return userdao.find(object);
+		return userdao.listsofUserDetails(object);
 	}
 }
+
