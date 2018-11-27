@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <head>
 <title>Register</title>
 <link rel="stylesheet" href="css/bootstrap.css">
@@ -33,7 +33,7 @@
 										<h3>Fill the Details :</h3>
 									</div>
 									<div class="form-body form-body-info">
-										<form data-toggle="validator" id="registration-form" novalidate="true" enctype="multipart/form-data" action="save" method="post">
+										<form data-toggle="validator" id="registration-form" novalidate="true" enctype="multipart/form-data" action="saveorupdate" method="post">
 											<#if !files??>
 											 	<div class="form-group register-image text-center">
 													<img src="images/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar" accept="image/*"><br>
@@ -67,13 +67,13 @@
 													<span class="help-block with-errors"></span>
 												</div>
 												
-											<#-- Date of Birth* :
+												Date of Birth* :
 												<div class="form-group">
 													<input type="date" value="${userdetail.date_of_birth }" class="form-control" name="date_of_birth" id="inputDate" placeholder="MM/DD/YYY" required="">
 												</div>
-											 -->
+											
 											<#--	<#if Session.user_id?exists || Session.role_id == 1 && userdetail??>
-												Password* :
+											-->	Password* :
 												<div class="form-group">
 												  <input type="password" value="${userdetail.password }" data-toggle="validator" data-minlength="6" class="form-control" name="password" id="inputPassword" placeholder="Password" required="">
 												  <span class="help-block">Minimum of 6 characters</span>
@@ -82,7 +82,7 @@
 												  <input type="password" value="${userdetail.password }" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Whoops, these don't match" placeholder="Confirm password" required="">
 												  <div class="help-block with-errors"></div>
 												</div>
-												</#if>	-->
+											<#--	</#if>	-->
 											<#else>
 											
 											<#if !userdetail??>
@@ -178,6 +178,9 @@
 													</#list>
 												<#else>
 													<div class="row group address">
+														<div class="form-group">
+															<input  value="0" class="form-control" type="hidden" name="address_id" required="">
+														</div>	
 														<div class="form-group">
 															<input  value="insertAddress" class="form-control" type="hidden" name="operationAddress" required="">
 														</div>

@@ -5,7 +5,10 @@ package org.springmvchibernate.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -108,18 +111,21 @@ public class UserController {
 		session.removeAttribute("role_id");
 		return "index";
 	}
-
-	@RequestMapping(value = "/save", method = RequestMethod.POST) /* Registaer User */
-	public String save(ModelMap model, @ModelAttribute User user, @RequestPart("image") MultipartFile[] filedata,
-			@RequestParam("address_line1") List<String> address_line1,
-			@RequestParam("address_line2") List<String> address_line2, @RequestParam("city") List<String> city,
-			@RequestParam("state") List<String> state, @RequestParam("country") List<String> country,
-			@RequestParam("pincode") List<Integer> pincode) throws IOException {
-
+	
+	private static Set<Address> setofaddress(
+			List<String> operationAddress,
+			List<String> address_id,
+			List<String> address_line1,List<String> address_line2, 
+			List<String> city,List<String> state, 
+			List<String> country,List<Integer> pincode){
+		
 		Set<Address> setofaddress = new HashSet<Address>();
 		for (int index = 0; index < address_line1.size(); index++) {
 			Address address1 = new AnnotationConfigApplicationContext(Address.class).getBean(Address.class);
-
+			
+			if("updateAddress".equals(operationAddress.get(index))) {
+			address1.setAddress_id(Integer.parseInt(address_id.get(index)));
+			}
 			address1.setAddress_line1(address_line1.get(index));
 			address1.setAddress_line2(address_line2.get(index));
 			address1.setCity(city.get(index));
@@ -128,7 +134,38 @@ public class UserController {
 			address1.setState(state.get(index));
 			setofaddress.add(address1);
 		}
-		user.setAddress(setofaddress);
+		return setofaddress;
+	}
+	
+	@RequestMapping(value = "/saveorupdate", method = RequestMethod.POST) /* Registaer User */
+	public String save(ModelMap model, HttpSession session,
+							@ModelAttribute User user, 
+							@RequestParam("operation") String operation,
+							@RequestParam("operationAddress") List<String> operationAddress,
+							@RequestParam("address_id") List<String> address_id,
+							@RequestParam("address_line1") List<String> address_line1,@RequestParam("address_line2") List<String> address_line2, 
+							@RequestParam("city") List<String> city,@RequestParam("state") List<String> state, 
+							@RequestParam("country") List<String> country,@RequestParam("pincode") List<Integer> pincode, 
+							@RequestPart("image") MultipartFile[] filedata) throws IOException {
+		
+		if("update".equals(operation)) {
+			List<Object> users = userservice.fetchUser(user.getUser_id());
+			user.setAddress(setofaddress(operationAddress,address_id, address_line1, address_line2, city, state, country, pincode));
+			User userdata = null;
+			for (Iterator<Object> iterator1 = users.iterator(); iterator1.hasNext();) {
+				userdata = (User) iterator1.next();
+			}
+			userdata.merge(user);
+			userservice.updatedata(userdata);
+			return "index";
+		}else { 
+			try {
+				user.setUser_created_time(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			} catch (ParseException e) {
+				_log.info(e);
+			}
+			
+		user.setAddress(setofaddress(operationAddress,null, address_line1, address_line2, city, state, country, pincode));
 
 		Set<Files> setoffile = new HashSet<Files>();
 		if (filedata != null && filedata.length > 0) {
@@ -140,24 +177,28 @@ public class UserController {
 			user.setFile(setoffile);
 		}
 		userservice.savedata(user);
+		}
 		return "index";
 	}
 
 	@RequestMapping("/mydetails") /* Get User Own Detail */
-	public String myDetails(ModelMap model, HttpSession session) throws SQLException {
+	public String myDetails(ModelMap model, HttpSession session) {
 
 		List<Object> users = userservice.fetchUser((Integer) session.getAttribute("user_id"));
 		for (Iterator<Object> iterator1 = users.iterator(); iterator1.hasNext();) {
 			User user = (User) iterator1.next();
+			_log.info("Date Of birth :"+user.getDate_of_birth());
 			model.addAttribute("userdetail", user);
 			model.addAttribute("addresses", user.getAddress());
-			
-			for (Iterator<Files> iterator2 = user.getFile().iterator(); iterator2.hasNext();) {
-			model.addAttribute("filestring", Base64.getEncoder().encodeToString(iterator2.next().getFile().getBytes(1, (int) iterator2.next().getFile().length())));
-			iterator2.next().getFile().free();
-			}
-			
 			model.addAttribute("files", user.getFile());
+			
+			/*for (Iterator<Files> iterator2 = user.getFile().iterator(); iterator2.hasNext();) {
+			model.addAttribute("filestring", Base64.getEncoder()
+												.encodeToString(iterator2.next().getFile()
+														.getBytes(1, (int) iterator2.next()
+															.getFile().length())));
+			}*/
+			
 		}
 		return "register";
 	}

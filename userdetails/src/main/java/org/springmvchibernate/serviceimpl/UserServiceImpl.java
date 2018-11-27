@@ -92,5 +92,11 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return userdao.listsofUserDetails(object);
 	}
+	
+	@Transactional
+	@Override
+	public void updatedata(User user) {
+		userdao.update(user);		
+	}
 }
 

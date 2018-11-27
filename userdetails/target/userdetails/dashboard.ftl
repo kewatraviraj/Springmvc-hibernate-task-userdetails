@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <#if !Session.user_id?exists>
-	 response.sendRedirect(index.ftl) 
+	<script language="javascript">
+		location.replace("http://localhost:8080/userdetails/index.ftl"); 
+	</script>
 </#if>
 <html>
 <head>
