@@ -85,13 +85,6 @@ public class Files {
 
 	public void setFile_update_time(Calendar file_update_time) {
 		this.file_update_time = file_update_time;
-	}
-	
-	@Override
-	public String toString() {
-		return "Files [file_id=" + file_id + ", file_type=" + file_type + ", file=" + file + ", file_created_time="
-				+ file_created_time + ", file_update_by=" + file_update_by + ", file_update_time=" + file_update_time
-				+ "]";
 	}*/
 
 }

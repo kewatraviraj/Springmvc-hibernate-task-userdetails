@@ -66,7 +66,6 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> listsofUserDetails(Integer object) {
-		// TODO Auto-generated method stub
 		return this.entitymanager.createQuery("from User u where u.user_id = :user_id").setParameter("user_id", object)
 				.getResultList();
 	}

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <head>
 <title>Register</title>
 <link rel="stylesheet" href="css/bootstrap.css">
@@ -33,7 +34,7 @@
 										<h3>Fill the Details :</h3>
 									</div>
 									<div class="form-body form-body-info">
-										<form data-toggle="validator" id="registration-form" novalidate="true" enctype="multipart/form-data" action="saveorupdate" method="post">
+										<form data-toggle="validator" id="registration-form" novalidate="true" onsubmit="return validchange()" enctype="multipart/form-data" action="saveorupdate" method="post">
 											<#if !files??>
 											 	<div class="form-group register-image text-center">
 													<img src="images/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar" accept="image/*"><br>
@@ -316,7 +317,7 @@
 				$("#registration-form").data("changed",true);
 			});
 			
-			<#-- function validchange(){
+			function validchange(){
 				 if($("#registration-form").data("changed")){
 					return true;
 				}else{
@@ -324,7 +325,7 @@
 					window.location.hash = '#notchanges';
 					return false;
 				 } 
-			} -->
+			}
 		</script>
 
 		<script src="js/proton.js"></script>

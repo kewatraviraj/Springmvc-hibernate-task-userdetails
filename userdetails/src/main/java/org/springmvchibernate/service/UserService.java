@@ -24,9 +24,9 @@ public interface UserService {
 
 	User userdetails(String email);
 
-	void savedata(User user);
+	User savedata(User user);
 	
-	void updatedata(User user);
+	boolean updatedata(User user);
 	
 	List<User> listUsers();
 

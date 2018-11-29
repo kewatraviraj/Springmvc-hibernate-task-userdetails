@@ -26,9 +26,9 @@
                 </div>
             </div>
             <#if users?exists>
-			Search here :
+			<#-- Search here :
 			<input type="text" id="myInput" class="center-block" onkeyup="myFunction()" placeholder="Search for users.." title="Type in a name">
-			
+			 -->
 			<div class="table-wrapper table-responsive">
 				<table id="myTable" class="table table-bordered table-striped table-responsive-md text-center" style="width:100%; overflow:scroll; ">
 				<thead>
@@ -42,9 +42,9 @@
 	                <tbody>
 	                	<#list users as userdetail>
 	                    <tr>
-	                        <td>${userdetail.first_name }" "${userdetail.last_name }</td>
+	                        <td>${userdetail.first_name } ${userdetail.last_name }</td>
 							<td>${userdetail.email }</td>
-							<td><#--${userdetail.created_time }--></td>
+							<td>${userdetail.user_created_time }</td>
 	                        <td>
 								<a href="userdetails?user_id=${userdetail.user_id }" class="btn btn-lg label-warning hidden-xs">Edit</a>
 								<a href="userdetails?user_id=${userdetail.user_id }" class="edit visible-xs" data-toggle="modal"><i class="glyphicon glyphicon-edit" title="Edit"></i></a>
@@ -62,11 +62,9 @@
 			<#else>
 				<h3>No Record Found</h3>
 			</#if>
-		<!-- footer -->
 		<div class="footer">
 			<p>� 2018. All Rights Reserved. Design by</p>
 		</div>
-		<!-- //footer -->
 		</div>
 	</section>
 	
@@ -95,9 +93,7 @@
 	}
 	</script>
 	
-	<!--validator js-->
 	<script src="js/customvalidate.js"></script>
-	<!--//validator js-->
 	<script>
 	$(".delete").click(function(){
 		$.ajax({
@@ -114,7 +110,20 @@
 		    });
 	});
 	</script>
-
+	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script>
+	$(document).ready(function() {
+	    $('#myTable').DataTable( {
+	        "language": {
+	            "lengthMenu": "Display _MENU_ records per page",
+	            "zeroRecords": "Nothing found - sorry",
+	            "info": "Showing page _PAGE_ of _PAGES_",
+	            "infoEmpty": "No records available",
+	            "infoFiltered": "(filtered from _MAX_ total records)"
+	        }
+    	} );
+	} );
+	</script>
 	<script src="js/proton.js"></script>
 </body>
 </html>

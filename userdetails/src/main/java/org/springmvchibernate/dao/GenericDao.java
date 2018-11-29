@@ -6,6 +6,8 @@ package org.springmvchibernate.dao;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.PersistenceException;
+
 /**
  * @author Dell
  *
@@ -20,7 +22,7 @@ public interface GenericDao<T> {
 
     T find(Object id);
 
-    T update(T t);  
+    T update(T t)throws PersistenceException;  
     
     List<T> listsofDetails();
 }

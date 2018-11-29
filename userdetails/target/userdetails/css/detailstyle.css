@@ -61,4 +61,7 @@ body {
     }
     table.table td a.delete {
         color: #E34724;
-    }    
+    }
+    div.dataTables_wrapper div {
+		margin-top:2%;
+	}

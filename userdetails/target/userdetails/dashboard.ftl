@@ -15,7 +15,7 @@
 	
 	<section class="wrapper scrollable">
 		<div class="rightside">
-			<div class="text-center"><#--<c:out value="${requestScope.message }" /> --></div>
+			<div class="text-center"><#if messages??>${messages }" </#if></div>
 			<#include "dashboardContent.ftl" />
 			
 			<div class="footer">

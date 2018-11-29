@@ -5,8 +5,10 @@ package org.springmvchibernate.serviceimpl;
 
 import java.util.List;
 
+import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,16 +22,19 @@ import org.springmvchibernate.service.UserService;
  */
 @Service
 public class UserServiceImpl implements UserService {
-	
+
+	private static final Logger _log = Logger.getLogger(UserServiceImpl.class.getName());
+
 	@Autowired
 	UserDao userdao;
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
 	 * @see org.springmvchibernate.service.UserService#login()
 	 */
 	@Transactional
 	@Override
-	public boolean login(String email,String password) {
+	public boolean login(String email, String password) {
 		return userdao.isValidUser(email, password);
 	}
 
@@ -38,18 +43,23 @@ public class UserServiceImpl implements UserService {
 	public Object forgotPass(String email) {
 		return userdao.forgotpwd(email);
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.springmvchibernate.service.UserService#savedata(org.springmvchibernate.model.User)
+
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * org.springmvchibernate.service.UserService#savedata(org.springmvchibernate.
+	 * model.User)
 	 */
 	@Transactional
 	@Override
-	public void savedata(User user) {
-		userdao.create(user);
+	public User savedata(User user) {
+		User usertype = userdao.create(user);
+		return usertype;
 	}
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.springmvchibernate.service.UserService#userdetails(java.lang.String)
 	 */
 	@Transactional
@@ -58,45 +68,53 @@ public class UserServiceImpl implements UserService {
 		return userdao.getUserDetails(email);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.springmvchibernate.service.UserService#listdetails()
 	 */
 	@Transactional
 	@Override
 	public List<User> listUsers() {
-		// TODO Auto-generated method stub
 		return userdao.listsofDetails();
 	}
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.springmvchibernate.service.UserService#deleteUser(java.lang.Integer)
 	 */
 	@Transactional
 	@Override
 	public boolean deleteUser(Integer user_id) {
-		try { 
-				userdao.delete(user_id);
-				return true;
-			}catch (HibernateException e) {
-				e.printStackTrace();
-				return false;
-			}
+		try {
+			userdao.delete(user_id);
+			return true;
+		} catch (HibernateException e) {
+			_log.error(e);
+			return false;
+		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.springmvchibernate.service.UserService#fetch(java.lang.Object)
 	 */
 	@Override
 	public List<Object> fetchUser(Integer object) {
-		// TODO Auto-generated method stub
 		return userdao.listsofUserDetails(object);
 	}
-	
+
 	@Transactional
 	@Override
-	public void updatedata(User user) {
-		userdao.update(user);		
+	public boolean updatedata(User user) {
+		try{
+			userdao.update(user);
+			return true;
+		}catch (PersistenceException e) {
+			_log.info(e);
+	       return false;
+	    }
 	}
 }
-

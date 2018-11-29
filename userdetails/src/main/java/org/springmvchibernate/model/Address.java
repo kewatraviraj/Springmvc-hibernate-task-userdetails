@@ -42,8 +42,7 @@ public class Address {
 	public Integer getAddress_id() {
 		return address_id;
 	}
-
-
+	
 	public void setAddress_id(Integer address_id) {
 		this.address_id = address_id;
 	}
@@ -138,14 +137,6 @@ public class Address {
 	
 	public void setAddress_update_time(Calendar address_update_time) {
 		this.address_update_time = address_update_time;
-	}
-
-	@Override
-	public String toString() {
-		return "Address [address_id=" + address_id + ", address_line1=" + address_line1 + ", address_line2="
-				+ address_line2 + ", city=" + city + ", state=" + state + ", country=" + country + ", pincode="
-				+ pincode + ", address_created_time=" + address_created_time + ", address_update_by="
-				+ address_update_by + ", address_update_time=" + address_update_time + ", user=" + user + "]";
 	}
 */
 }

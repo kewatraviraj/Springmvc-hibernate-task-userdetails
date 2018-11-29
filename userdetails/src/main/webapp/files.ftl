@@ -23,32 +23,33 @@
 					<tr>
 						<th>FileId</th>
 						<th>File</th>
-						<th>Created Time</th>
+					<#-- 	<th>Created Time</th> -->
 						
 					</tr>
 				</thead>
 				<tbody>
-					<#list files as filedetail>
+					<#if files?? && filestring??>
+					<#assign maxSize = (files?size < filestring?size)?then(files?size, filestring?size)>
+				
+					<#list 0 ..< maxSize as index>
 					<tr>
-						<td>${filedetail.file_id }</td>
-						<#if filedetail.file_type == 'image'>
-							<td><img src="data:image/jpeg;base64,<#if filestring??>${filestring }</#if>" height:='100px'; width='100px'></td>
+						<td>${(files[index].file_id)!}</td>
+						<#if files[index].file_type == 'image'>
+							<td><img src="data:image/jpeg;base64,${(filestring[index])!}" height:='100px'; width='100px'></td>
 						</#if>
-						<td><#--${filedetail.created_time }  --></td>
-						
+						<td><#--${filedetail.created_time }  --></td>	
 					</tr>
 					</#list>
+					</#if>
 				</tbody>
 			</table>
 			<#else>
 				<h3>No Record Found</h3>
 			</#if>
 			</div>
-			<!-- footer -->
 			<div class="footer">
 				<p>� 2018. All Rights Reserved. Design by</p>
 			</div>
-			<!-- //footer -->
 		</div>
 	</section>
 	
@@ -57,10 +58,8 @@
 		<script src="js/jquery.cookie.js"></script>
 		<script src="js/bootstrap.js"></script>
 		
-		<!--validator js-->
 		<script src="js/customvalidate.js"></script>
-		<!--//validator js-->
-		
+
 		<script src="js/proton.js"></script>
 </body>
 </html>

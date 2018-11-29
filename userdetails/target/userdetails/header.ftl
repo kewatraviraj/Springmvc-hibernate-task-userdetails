@@ -8,6 +8,7 @@
 <link href="<@spring.url '/css/font-awesome.css' />" rel="stylesheet"> 
 <link href="<@spring.url '/css/customstyle.css' />" rel="stylesheet">
 <link href="<@spring.url '/css/detailstyle.css' />" rel='stylesheet' type='text/css' />
+<link href="<@spring.url '/css/dataTables.min.css' />" rel="stylesheet">
 </head>
 <body>
 
@@ -28,8 +29,8 @@
 		  		<li style="padding-top:2%"><h3>Welcome ${Session.first_name}</h3></li>
 				<li style="padding-top:2%"><a href="logout" class="btn btn-primary">Logout</a></li>
 		  	<#else>
-		  		<li style="padding-top:2%"><a href="requestregister" class="btn btn-primary">Sign Up</a></li>
-				<li style="padding-top:2%"><a href="index.ftl" class="btn btn-primary">Login</a><li>
+		  		<li style="padding-top:2%"><a href="register" class="btn btn-primary">Sign Up</a></li>
+				<li style="padding-top:2%"><a href="requestlogin" class="btn btn-primary">Login</a><li>
 		  	</#if>
 		    </ul> 
 		</div>

@@ -35,4 +35,11 @@ public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServl
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
     	registration.setMultipartConfig(new MultipartConfigElement("/tmp"));
     }
+    
+/*    @Override
+    protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
+        final DispatcherServlet dispatcherServlet = (DispatcherServlet) super.createDispatcherServlet(servletAppContext);
+        dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
+        return dispatcherServlet;
+    }*/
 }

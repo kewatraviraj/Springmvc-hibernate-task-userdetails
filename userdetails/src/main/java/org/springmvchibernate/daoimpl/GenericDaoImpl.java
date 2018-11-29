@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springmvchibernate.dao.GenericDao;
 
 /**
@@ -45,8 +46,12 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 
 	@Override
 	public T create(final T typ) {
-		this.entitymanager.persist(typ);
-		return typ;
+		try {
+			this.entitymanager.persist(typ);
+			return typ;
+		 }catch (RuntimeException ex) {
+	        return null;
+	    }
 	}
 
 	@Override
@@ -61,7 +66,11 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 
 	@Override
 	public T update(final T typ) {
-		return (T) this.entitymanager.merge(typ);
+		try {
+			return (T) this.entitymanager.merge(typ);
+		}catch(ConstraintViolationException e){
+			throw e;
+		}
 	}
 
 	@Override
