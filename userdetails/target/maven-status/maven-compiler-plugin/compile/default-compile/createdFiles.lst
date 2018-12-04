@@ -1,8 +1,7 @@
+org/springmvchibernate/controller/UserRegister.class
 org/springmvchibernate/initializer/MyWebAppInitializer.class
 org/springmvchibernate/configuration/WebMvcConfig.class
-org/springmvchibernate/controller/UserController.class
 org/springmvchibernate/configuration/HibernateConfig.class
-org/springmvchibernate/controller/ExceptionController.class
 org/springmvchibernate/serviceimpl/FilesServiceImpl.class
 org/springmvchibernate/service/FilesService.class
 org/springmvchibernate/daoimpl/GenericDaoImpl.class
@@ -11,13 +10,14 @@ org/springmvchibernate/dao/FilesDao.class
 org/springmvchibernate/daoimpl/FilesDaoImpl.class
 org/springmvchibernate/service/UserService.class
 org/springmvchibernate/dao/AddressDao.class
+org/springmvchibernate/controller/GlobalExceptionHandlerController.class
 org/springmvchibernate/service/AddressService.class
+org/springmvchibernate/controller/UserAction.class
 org/springmvchibernate/model/User.class
 org/springmvchibernate/dao/GenericDao.class
-org/springmvchibernate/controller/TestController.class
 org/springmvchibernate/model/Address.class
 org/springmvchibernate/dao/UserDao.class
-org/springmvchibernate/filters/AuthenticateUserLogin.class
+org/springmvchibernate/filters/NoCacheFilter.class
 org/springmvchibernate/model/Files.class
 org/springmvchibernate/serviceimpl/UserServiceImpl.class
 org/springmvchibernate/daoimpl/UserDaoImpl.class

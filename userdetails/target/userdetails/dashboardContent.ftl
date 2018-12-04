@@ -1,19 +1,17 @@
-	<div class="row info leftside">
-		<#-- <a href="operation?action=get&&userid=<#if Session.user_id?exists>${Session.user_id} </#if>"> -->
-		<a href="mydetails">
-			<div class="bg-info mb-2 text-white well well-lg col-sm-3 col-sm-offset-1">My Details</div>
-		</a>
-		<#-- <a href="useraddress?userid=<#if Session.user?exists>${Session.user.user_id} </#if>">
-			<div class="bg-info mb-2 text-white well well-lg col-sm-3 col-sm-offset-1">My Address</div>
-		</a>
-		<a href="userfile?action=get&&userid=<#if Session.user?exists>${Session.user.user_id} </#if>">
-			<div class="bg-info mb-2 text-white well well-lg col-sm-3 col-sm-offset-1">My Files</div>
-		</a> -->
+<html>
+<head>
+<style>
+</style>
+</head>
+<body>
+	<div class="shadow-lg p-3 mb-5 bg-white rounded backgroundImage">
+		<div class="text-white contentsprofile">
+			<h1>Hello <#if Session.user_id??>${Session.first_name}</#if></h1><br>
+				<a href="mydetails" class="btn btn-info">view your Details</a>
+		</div>
 	</div>
-	<#if Session.user_id?exists>
 	
-	<#if Session.role_id == 1>
-	<div class="social grid">
+	<#--<div class="social grid">
 		<div class="grid-info">
 			<div class="col-md-4 top-comment-grid">
 				<a href="display?type=User">
@@ -25,7 +23,7 @@
 				</div>
 				</a>
 			</div>
-			<div class="col-md-4 top-comment-grid">
+		 	<div class="col-md-4 top-comment-grid">
 				<a href="display?type=Address">
 				<div class="comments">
 					<div class="comments-info">
@@ -45,7 +43,7 @@
 				</div>
 				</a>
 			</div>
-		<#--  	<div class="col-md-3 top-comment-grid">
+		 	<div class="col-md-3 top-comment-grid">
 				<a href="">
 				<div class="comments views">
 					<div class="comments-info views-info">
@@ -54,9 +52,9 @@
 					<div class="clearfix"> </div>
 				</div>
 				</a>
-			</div>  -->
+			</div> 
 			<div class="clearfix"> </div>
 		</div>
-	</div>	
-	</#if>
-	</#if>
+	</div>	 -->
+</body>
+</html>

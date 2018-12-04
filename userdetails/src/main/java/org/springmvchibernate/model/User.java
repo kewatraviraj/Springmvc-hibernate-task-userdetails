@@ -141,9 +141,7 @@ public class User {
 	}
 
 	public String getDate_of_birth() {
-		DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String formattedDate = targetFormat.format(date_of_birth);
-		return formattedDate;
+		return new SimpleDateFormat("yyyy-MM-dd").format(date_of_birth);
 	}
 
 	public void setDate_of_birth(String date_of_birth) throws ParseException {

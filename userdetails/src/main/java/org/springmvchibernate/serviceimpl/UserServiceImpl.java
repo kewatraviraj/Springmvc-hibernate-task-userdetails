@@ -5,7 +5,6 @@ package org.springmvchibernate.serviceimpl;
 
 import java.util.List;
 
-import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
@@ -53,8 +52,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public User savedata(User user) {
-		User usertype = userdao.create(user);
-		return usertype;
+		return userdao.create(user);
 	}
 
 	/*
@@ -108,13 +106,8 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public boolean updatedata(User user) {
-		try{
-			userdao.update(user);
-			return true;
-		}catch (PersistenceException e) {
-			_log.info(e);
-	       return false;
-	    }
+	public boolean updatedata(User user) {	
+		return null != userdao.update(user) ? true : false ;
+		
 	}
 }

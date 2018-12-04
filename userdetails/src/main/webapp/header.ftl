@@ -26,7 +26,7 @@
 		<div class="collapse navbar-collapse" id="myNavbar">
 		  <ul class="nav navbar-nav navbar-right">
 		  	<#if Session.user_id?exists>
-		  		<li style="padding-top:2%"><h3>Welcome ${Session.first_name}</h3></li>
+		  		<li style="padding-top:2%"><a class="btn btn-primary">Welcome ${Session.first_name}</a></li>
 				<li style="padding-top:2%"><a href="logout" class="btn btn-primary">Logout</a></li>
 		  	<#else>
 		  		<li style="padding-top:2%"><a href="register" class="btn btn-primary">Sign Up</a></li>

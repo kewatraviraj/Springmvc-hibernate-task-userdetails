@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <#if !Session.user_id?exists>
-	
+	<script language="javascript">
+		location.replace("http://localhost:8080/userdetails/index"); 
+	</script>
 </#if>
 <head>
 <title>Address</title>

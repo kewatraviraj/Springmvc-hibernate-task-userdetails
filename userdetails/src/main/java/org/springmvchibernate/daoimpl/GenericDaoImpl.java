@@ -12,7 +12,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springmvchibernate.dao.GenericDao;
 
 /**
@@ -21,12 +22,13 @@ import org.springmvchibernate.dao.GenericDao;
  */
 
 public abstract class GenericDaoImpl<T> implements GenericDao<T> {
-
+	
 	@PersistenceContext 
 	protected EntityManager entitymanager;
 	
 	private Class<T> classtype;
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public GenericDaoImpl() {
 		Type typ = getClass().getGenericSuperclass();
 		ParameterizedType paratype = (ParameterizedType) typ;
@@ -43,14 +45,15 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 		final Query query = this.entitymanager.createQuery(queryString.toString());
 		return (Long) query.getSingleResult();
 	}
-
+	
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public T create(final T typ) {
 		try {
 			this.entitymanager.persist(typ);
 			return typ;
-		 }catch (RuntimeException ex) {
-	        return null;
+		 }catch (RuntimeException e) {
+			return null;
 	    }
 	}
 
@@ -64,15 +67,17 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 		return (T) this.entitymanager.find(classtype, id);
 	}
 
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	@Override
 	public T update(final T typ) {
 		try {
 			return (T) this.entitymanager.merge(typ);
-		}catch(ConstraintViolationException e){
-			throw e;
+		}catch(RuntimeException e){
+			return null;
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> listsofDetails() {
 		return this.entitymanager.createQuery("SELECT d FROM "+classtype.getName()+" d").getResultList();	

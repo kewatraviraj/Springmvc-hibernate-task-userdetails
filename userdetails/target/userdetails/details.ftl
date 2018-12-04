@@ -1,9 +1,31 @@
 <!DOCTYPE html>
 <#if !Session.user_id?exists>
-	
+	<script language="javascript">
+		location.replace("http://localhost:8080/userdetails/index"); 
+	</script>
 </#if>
 <head>
 <title>Details</title>
+<style>
+.backgroundImage{
+  background-image: url("images/luminfire.jpg"); 
+  background-color: #cccccc; 
+  height:10em;
+  width:100%;
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: cover;
+  position: relative;
+}
+.contentsprofile{
+	position: absolute;
+	left: 3%;
+	top:15%;
+}
+.dataTables_filter{
+	margin-bottom:3%;
+}
+</style>
 </head>
 <body class="dashboard-page">
 	
@@ -17,7 +39,7 @@
 			  <div class="table-title">
                 <div class="row">
                     <div class="col-sm-8">
-						<h5>All	 <b>Users</b></h5>
+						<h3>All	Users</h3>
 					</div>
 
 					<div class="col-sm-4">
@@ -30,7 +52,7 @@
 			<input type="text" id="myInput" class="center-block" onkeyup="myFunction()" placeholder="Search for users.." title="Type in a name">
 			 -->
 			<div class="table-wrapper table-responsive">
-				<table id="myTable" class="table table-bordered table-striped table-responsive-md text-center" style="width:100%; overflow:scroll; ">
+				<table id="myTable" class=" text-center" style="width:100%; overflow:scroll; ">
 				<thead>
 	                    <tr>
 	                        <th>Name</th>
@@ -51,7 +73,10 @@
 						
 								<#if Session.role_id == 1>							
 									<button data-for="${userdetail.user_id }" type="Submit" class="btn btn-lg label-danger delete hidden-xs">Delete</button>
-									<button data-for="${userdetail.user_id }" class="delete visible-xs" data-toggle="modal"><i class="material-icons" title="Delete">&#xE872;</i></button>
+									<#-- <button data-for="${userdetail.user_id }" class="delete visible-xs" data-toggle="modal"><i class="material-icons" title="Delete">&#xE872;</i></button>
+									 -->
+									 <button data-for="${userdetail.user_id }" class="delete visible-xs" data-toggle="modal"><i class="glyphicon glyphicon-remove" title="Delete"></i></button>
+									 
 								</#if>
 							</td>
 	                    </tr>
@@ -110,7 +135,7 @@
 		    });
 	});
 	</script>
-	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script src="js/dataTables.min.js"></script>
 	<script>
 	$(document).ready(function() {
 	    $('#myTable').DataTable( {

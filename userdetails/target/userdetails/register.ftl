@@ -37,7 +37,7 @@
 										<form data-toggle="validator" id="registration-form" novalidate="true" onsubmit="return validchange()" enctype="multipart/form-data" action="saveorupdate" method="post">
 											<#if !files??>
 											 	<div class="form-group register-image text-center">
-													<img src="images/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar" accept="image/*"><br>
+													<img src="images/avatar_2x.png" class="avatar img-circle img-thumbnail" style="height:12em; width:15em" alt="avatar" accept="image/*"><br>
 													<h6>Upload Image...*</h6><br>		
 													<input type="file" class="text-center file-upload" name="image" required="">
 												</div>
@@ -63,7 +63,7 @@
 												</div>
 												Mobile No.* :
 												<div class="form-group has-feedback">
-													<input type="number" value="${userdetail.mobile_no?long?c }" data-toggle="validator" min="0" data-minlength="10" class="form-control" name="mobile_no" id="inputMobile" placeholder="Mobile No" data-error="Invalid mobile No" required="">
+													<input type="text" value="${userdetail.mobile_no?long?c }" data-toggle="validator" data-minlength="10"  onkeypress="return isNumberKey(event,this.value.length,10)" class="form-control" name="mobile_no" id="inputMobile" placeholder="Mobile No" data-error="Invalid mobile No" required="">
 													<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
 													<span class="help-block with-errors"></span>
 												</div>
@@ -105,7 +105,7 @@
 											</div>
 											Mobile No.* :
 											<div class="form-group has-feedback">
-												<input type="number" data-toggle="validator" min="0" data-minlength="10" class="form-control" name="mobile_no" id="inputMobile" placeholder="Mobile No" data-error="Invalid mobile No" required="">
+												<input type="text" data-toggle="validator" data-minlength="10" onkeypress="return isNumberKey(event,this.value.length,10)" class="form-control" name="mobile_no" id="inputMobile" placeholder="Mobile No" data-error="Invalid mobile No" required="">
 												<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
 												<span class="help-block with-errors"></span>
 											</div>
@@ -148,7 +148,7 @@
 													<#list addresses as addressdetail>
 													<div class="row group address">
 														<div class="form-group">
-															<input  value="${addressdetail.address_id }" class="form-control" type="hidden" name="address_id" required="">
+															<input value="${addressdetail.address_id }" class="form-control" type="hidden" name="address_id" required="">
 														</div>
 														<div class="form-group">
 															<input  value="updateAddress" class="form-control" type="hidden" name="operationAddress" required="">
@@ -169,7 +169,7 @@
 															Country* :<input  value="${addressdetail.country }" class="form-control" type="text" name="country" required="">
 														</div>
 														<div class="form-group col-md-3">
-															Pincode* :<input  value="${addressdetail.pincode?long?c }" class="form-control" data-minlength="6" type="number" min="1" name="pincode" required="">
+															Pincode* :<input value="${addressdetail.pincode?long?c }" class="form-control" data-minlength="6" type="text" onkeypress="return isNumberKey(event,this.value.length,6)" name="pincode" required="">
 														</div>
 														
 														<div class="col-md-3">
@@ -201,7 +201,7 @@
 															Country* :<input class="form-control" type="text" name="country" required="">
 														</div>
 														<div class="form-group col-md-3">
-															Pincode* :<input class="form-control" data-minlength="6" type="number" min="1" name="pincode" required="">
+															Pincode* :<input class="form-control" data-minlength="6" type="text" onkeypress="return isNumberKey(event,this.value.length,6)" name="pincode" required="">
 														</div>
 														
 														<div class="col-md-3">
@@ -267,9 +267,9 @@
 				});
 				
 				<#if userdetail??>	
-					var gender=${userdetail.gender };
+					var gender="${userdetail.gender}";
 				<#else>
-					var gender="female"
+					var gender="female";
 				</#if>
 				if( gender == "male"){
 					$("#male").prop("checked", true);
@@ -316,6 +316,28 @@
 			$("#registration-form :input[type='text'], :input[type='email'], :input[type='number'], :input[type='radio'], :input[type='date']").change(function() {
 				$("#registration-form").data("changed",true);
 			});
+			
+			<#-- function isNumberKey(evt,length){
+			    var charCode = (evt.which) ? evt.which : event.keyCode
+			  if(length!=10){
+			  if (charCode > 31 && (charCode < 48 || charCode > 57)){
+			        return false;}
+			    return true;
+			   }else{
+			     return false;
+			   }
+			} -->
+			
+			function isNumberKey(evt,length,max){
+			    var charCode = (evt.which) ? evt.which : event.keyCode
+			 
+			  if (charCode > 31 && (charCode < 48 || charCode > 57)){
+			        return false;
+			  }else{
+			  	
+			      if(max==10 && length!=10 || max==6 && length!=6){ return true;}else{return false;}
+			  } 
+			}
 			
 			function validchange(){
 				 if($("#registration-form").data("changed")){

@@ -13,7 +13,7 @@
 		</div>
 		<div class="text-center">
 			<h3>Page Can Not Found</h3>
-			<h3><#if message??>${message}</#if></h3>
+			<h3><#if messages??>${messages}</#if></h3>
 		</div><br>
 		<div class="go-back">
 			<a href="index">Back To Home</a>

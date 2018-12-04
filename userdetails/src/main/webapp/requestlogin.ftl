@@ -1,9 +1,10 @@
+<#if Session.user_id?exists>
+	<script language="javascript">
+		location.replace("http://localhost:8080/userdetails/dashboard"); 
+	</script>
+</#if>
 <html>
 <head>
-<link rel="stylesheet" href="css/bootstrap.css">
-<link href="css/style.css" rel='stylesheet' type='text/css' />
-<link href="css/font-awesome.css" rel="stylesheet"> 
-<link href="css/customstyle.css" rel="stylesheet">
 <title>Login</title>
 <style>
 .pass-forgot{
@@ -19,7 +20,7 @@
 			<div class="panel panel-widget login-div agile-validation">
 				<div class="validation-grids validation-grids-right">
 					<div class="widget-shadow login-form-shadow" data-example-id="basic-forms"> 
-						<div class="text-center"><#if messages??>${messages}</#if></div>
+						<#if messages??><div class="alert alert-info text-center" role="alert">${messages}</div></#if>
 						<div class="input-info">
 							<h3>Sign In:</h3>
 						</div>
@@ -57,20 +58,15 @@
 	<script src="js/modernizr.js"></script>
 	<script src="js/jquery.cookie.js"></script>
 	<script src="js/bootstrap.js"></script>
-		
-		<script type="text/javascript" src="js/valida.2.1.6.min.js"></script>
-		<script type="text/javascript" >
-			$(document).ready(function() {
-
-				$('#version').valida( 'version' );
-
-				$('.valida').valida();
-				
-			});
-		</script>
-		<script src="js/validator.min.js"></script>
-		<script src="js/customvalidate.js"></script>
-
-		<script src="js/proton.js"></script>
+	<script type="text/javascript" src="js/valida.2.1.6.min.js"></script>
+	<script type="text/javascript" >
+		$(document).ready(function() {
+			$('#version').valida( 'version' );
+			$('.valida').valida();
+		});
+	</script>
+	<script src="js/validator.min.js"></script>
+	<script src="js/customvalidate.js"></script>
+	<script src="js/proton.js"></script>
 </body>
 </html>
